@@ -3,16 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ video.title }}</title>
 </head>
 <body>
     <div>
         <h2>{{ video.title }}</h2>
-        <h2>{{ video.upload_date }}</h2>
+        <p>Uploaded on: {{ video.upload_date }}</p>
+        
+        <!-- Video Player -->
         <video width="600" controls>
             <source src="{{ video.video_file.url }}" type="video/mp4">
-            <track kind="subtitles" src="data:text/vtt,{{ video.subtitle|urlencode }}" srclang="en" label="English" default>
+            {% if video.subtitle_file %}
+                <track kind="subtitles" src="{{ video.subtitle_file.url }}" srclang="en" label="English" default>
+            {% endif %}
+            Your browser does not support the video tag.
         </video>
+
+        <!-- Subtitle Text Display -->
+        {% if video.subtitle_text %}
+            <h3>Subtitles:</h3>
+            <pre>{{ video.subtitle_text }}</pre>  <!-- Display the subtitle as plain text -->
+        {% endif %}
     </div>
 </body>
 </html>
