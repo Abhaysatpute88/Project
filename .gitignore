@@ -1,0 +1,54 @@
+# Python general
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+
+# Django specific
+*.log
+*.pot
+*.py[co]
+db.sqlite3
+media/
+staticfiles/
+
+# Environments
+venv/
+ENV/
+env/
+.venv/
+build/
+dist/
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+
+# Pytest cache
+.pytest_cache/
+.cache/
+
+# IDE and editor specific
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+
+# MySQL/SQLite/Django DB files
+*.db
+
+# Secrets
+.env
+*.key
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+
+# Testing
+.coverage
+htmlcov/
+
+# Migrations
+**/migrations/*

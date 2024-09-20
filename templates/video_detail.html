@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>{{ video.title }}</h2>
+        <h2>{{ video.upload_date }}</h2>
+        <video width="600" controls>
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+            <track kind="subtitles" src="data:text/vtt,{{ video.subtitle|urlencode }}" srclang="en" label="English" default>
+        </video>
+    </div>
+</body>
+</html>

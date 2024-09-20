@@ -2,63 +2,6 @@
 <html>
 <head>
     <title>Video Upload and Processing</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        form input, form button {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        td video {
-            display: block;
-            margin: 0 auto;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
 </head>
 <body>
     <h1>Upload Video</h1>
@@ -67,28 +10,5 @@
         {{ form.as_p }}
         <button type="submit">Upload</button>
     </form>
-
-    <h2>Uploaded Videos</h2>
-    <br/>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Play</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for video in videos %}
-                <tr>
-                    <td>{{ video.title }}</td>
-                    <td>
-                        <video width="300" controls>
-                            <source src="{{ video.video_file.url}}" type="video/mp4">
-                        </video>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 </body>
 </html>

@@ -1,40 +1,56 @@
+import ffmpeg
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from .models import Video, Subtitle
-from .forms import VideoUploadForm
-from .tasks import extract_subtitles
+from .models import Video
+from .forms import VideoForm
+import os
+from django.db.models import Q
 
-# Create your views here.
+# Function to extract subtitles using ffmpeg
 
+def extract_subtitles(video_path):    
+    input_file = video_path
+    output_file = os.path.splitext(input_file)[0] + '.srt'
+
+    # Use ffmpeg to extract subtitles
+    (
+        ffmpeg
+        .input(input_file)
+        .output(output_file, format='srt', map='0:s:0')  # 'map' selects the subtitle stream, typically 0:s:0
+        .run()
+    )
+    return output_file 
+
+
+
+# Video Upload View
 def video_upload(request):
     if request.method == 'POST':
-        form = VideoUploadForm(request.POST, request.FILES)
+        form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
             video = form.save()
+            # Process the video and extract subtitles
+            video.subtitle = extract_subtitles(video.video_file.path)
+            video.save()
             return redirect('video_list')
     else:
-        form = VideoUploadForm()
-    videos = Video.objects.all()
-    return render(request, 'video_upload.html', {'form': form, 'videos': videos})
+        form = VideoForm()
+    return render(request, 'video_upload.html', {'form': form})
 
 
 
-def search_subtitles(request):
-    query = request.GET.get('q', '').lower()
-    video_id = request.GET.get('video_id')
-    subtitles = Subtitle.objects.filter(video_id=video_id, content__icontains=query)
-    results = [{'timestamp': sub.timestamp, 'content': sub.content} for sub in subtitles]
-    return JsonResponse({'results': results})
+# List and Search Videos
+def video_list(request):
+    query = request.GET.get('q')
+    if query:
+        # Search for phrases within subtitles
+        videos = Video.objects.filter(Q(subtitle__icontains=query))
+    else:
+        videos = Video.objects.all()
+    return render(request, 'video_list.html', {'videos': videos})
 
 
 
-
-
-
-
-
-
-
-
-
-
+# Play Video with Captions
+def video_detail(request, video_id):
+    video = Video.objects.get(id=video_id)
+    return render(request, 'video_detail.html', {'video': video})

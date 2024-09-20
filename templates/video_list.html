@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>Uploaded Videos</h2>
+            <form method="GET">
+                <input type="text" name="q" placeholder="Search in subtitles..." value="{{ request.GET.q }}">
+                <button type="submit">Search</button>
+            </form>
+
+            <ul>
+                {% for video in videos %}
+                    <li>
+                        <a href="{% url 'video_detail' video.id %}">{{ video.title }}</a>
+                    </li>
+                {% empty %}
+                    <li>No videos found</li>
+                {% endfor %}
+            </ul>
+    </div>
+</body>
+</html>
