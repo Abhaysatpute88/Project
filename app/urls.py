@@ -1,8 +1,12 @@
-from django.urls import path
-from . import views
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from .views import QuestionViewSet, PlayerViewSet, GameSessionViewSet
+
+router = DefaultRouter()
+router.register(r'questions', QuestionViewSet, basename='question')
+router.register(r'players', PlayerViewSet, basename='player')
+router.register(r'sessions', GameSessionViewSet, basename='session')
 
 urlpatterns = [
-    path('upload/', views.video_upload, name='video_upload'),
-    path('', views.video_list, name='video_list'),
-    path('video/<int:video_id>/', views.video_detail, name='video_detail'),
+    path('', include(router.urls)),
 ]
