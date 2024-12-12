@@ -1,17 +1,20 @@
 from rest_framework import serializers
-from .models import Question, Player, GameSession
+from .models import Client, Project
+from django.contrib.auth.models import User
 
-class QuestionSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Question
-        fields = ['id', 'question_text', 'answer', 'difficulty']
+        model = User
+        fields = ['id', 'username']
 
-class PlayerSerializer(serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
+    users = UserSerializer(many=True, read_only=True)
     class Meta:
-        model = Player
-        fields = ['player_id', 'score', 'streak']
+        model = Project
+        fields = '__all__'
 
-class GameSessionSerializer(serializers.ModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
+    projects = ProjectSerializer(many=True, read_only=True)
     class Meta:
-        model = GameSession
-        fields = ['player', 'question', 'answered_correctly', 'timestamp']
+        model = Client
+        fields = '__all__'
